@@ -105,7 +105,7 @@
             this.Controls.Add(this.btnSelectIcon);
             this.Controls.Add(this.txtFileName);
             this.Name = "BitmapPickerDialog";
-            this.Text = "IconExtractor Sample App";
+            this.Text = "Icon picker";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.BitmapPickerDialog_Load);
             this.ResumeLayout(false);
