@@ -15,7 +15,7 @@ ExeIconPicker plugin for KeePass 2.x is a plugin that let you grab an icon from 
 
 ## Prerequisites
 
-- KeePass 2.39 or newer
+- KeePass 2.20 or newer
 - Windows 7 or newer
 - .Net Framework 3.5
 
@@ -40,3 +40,5 @@ If you want to help the project, open a [new issue](https://github.com/eveldee06
 *ExeIconPicker* is licensed under the [Mit License](LICENSE).
 
 *IconExtractor* library is under the [BSD License](https://opensource.org/licenses/bsd-license.php) and owned by [Tsuda Kageyu](https://www.codeproject.com/script/Membership/View.aspx?mid=5207992), you can get it [here](https://www.codeproject.com/Articles/26824/Extract-icons-from-EXE-or-DLL-files).
+
+Also, some parts of my plugin are inspired by the great plugin [_Yet Another Favicon Downloader_](https://github.com/navossoc/KeePass-Yet-Another-Favicon-Downloader), so thanks to the author.
