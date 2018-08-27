@@ -104,7 +104,10 @@
             this.Controls.Add(this.lvwIcons);
             this.Controls.Add(this.btnSelectIcon);
             this.Controls.Add(this.txtFileName);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "BitmapPickerDialog";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Icon picker";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.BitmapPickerDialog_Load);

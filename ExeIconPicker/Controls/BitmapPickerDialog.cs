@@ -56,8 +56,7 @@ namespace ExeIconPicker.Controls
 
         private void btnPickFile_Click(object sender, EventArgs e)
         {
-            var result = iconPickerDialog.ShowDialog(this);
-            if (result == DialogResult.OK)
+            if (iconPickerDialog.ShowDialog(this) == DialogResult.OK)
             {
                 var fileName = iconPickerDialog.FileName;
                 var index = iconPickerDialog.IconIndex;

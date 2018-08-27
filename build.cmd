@@ -25,7 +25,7 @@ erase /F /S /Q obj bin >nul
 cd ..
 
 echo Building plgx...
-%KeePassDir%\KeePass.exe --plgx-create "%CurrentDir%%PluginName%"
+%KeePassDir%\KeePass.exe --plgx-create "%CurrentDir%%PluginName%" --plgx-prereq-kp:2.20 --plgx-prereq-net:3.5
 
 echo Moving to Plugins dir...
 move /Y ".\%PluginName%.plgx" "%KeePassPluginsDir%" >nul
