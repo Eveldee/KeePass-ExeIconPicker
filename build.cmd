@@ -16,8 +16,8 @@ cd %~dp0
 
 set CurrentDir=%~dp0
 set PluginName=ExeIconPicker
-set KeePassDir=D:\Install\Software\KeePass
-set KeePassPluginsDir=%KeePassDir%\Plugins
+set KeePassDir="D:\Install\Software\KeePass Password Safe 2"
+set KeePassPluginsDir="%KeePassDir%\Plugins"
 
 :: Cleaning files
 cd %PluginName%
