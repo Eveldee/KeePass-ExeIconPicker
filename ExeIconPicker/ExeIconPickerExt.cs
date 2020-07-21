@@ -22,6 +22,14 @@ namespace ExeIconPicker
         // Plugin host
         private IPluginHost pluginHost;
 
+        public override string UpdateUrl
+        {
+            get
+            {
+                return "https://raw.githubusercontent.com/Eveldee/KeePass-ExeIconPicker/master/Version.txt";
+            }
+        }
+
         // Icon
         Image contextMenuPickExeIcon;
         //  Entry Context Menu
@@ -32,7 +40,6 @@ namespace ExeIconPicker
         ContextMenuStrip groupContextMenu;
         ToolStripSeparator groupSeparator;
         ToolStripMenuItem groupPickExe;
-
 
         public override bool Initialize(IPluginHost host)
         {
