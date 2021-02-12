@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExeIconPicker.Utils;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -56,65 +57,89 @@ namespace ExeIconPicker.Controls
 
         private void btnPickFile_Click(object sender, EventArgs e)
         {
-            if (iconPickerDialog.ShowDialog(this) == DialogResult.OK)
+            using (OpenFileDialog openFileDialog = new OpenFileDialog()
             {
-                var fileName = iconPickerDialog.FileName;
-                var index = iconPickerDialog.IconIndex;
-
-                Icon icon = null;
-                Icon[] splitIcons = null;
-                try
+                Filter = "Icons (*.exe;*.ico;*.dll;*.lnk)|*.exe;*.ico;*.dll;*.lnk|All files (*.*)|*.*",
+                //DereferenceLinks = true, // This thing doesn't work sadly, idk why
+                Title = "Pick an icon (.ico) or a file containing an icon (.exe, .dll)"
+            })
+            {
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    if (Path.GetExtension(iconPickerDialog.FileName).ToLower() == ".ico")
+                    FileInfo fileInfo = new FileInfo(openFileDialog.FileName);
+
+                    // Dereference link cause MS can't make it work on OpenFileDialog
+                    if (fileInfo.Extension == ".lnk")
                     {
-                        icon = new Icon(iconPickerDialog.FileName);
+                        iconPickerDialog.FileName = Symlink.ResolveShortcut(fileInfo.FullName);
                     }
                     else
                     {
-                        var extractor = new IconExtractor(fileName);
-                        icon = extractor.GetIcon(index);
+                        iconPickerDialog.FileName = fileInfo.FullName;
                     }
 
-                    splitIcons = IconUtil.Split(icon);
+                    if (iconPickerDialog.ShowDialog(this) == DialogResult.OK)
+                    {
+                        var fileName = iconPickerDialog.FileName;
+                        var index = iconPickerDialog.IconIndex;
+
+                        Icon icon = null;
+                        Icon[] splitIcons = null;
+                        try
+                        {
+                            if (Path.GetExtension(iconPickerDialog.FileName).ToLower() == ".ico")
+                            {
+                                icon = new Icon(iconPickerDialog.FileName);
+                            }
+                            else
+                            {
+                                var extractor = new IconExtractor(fileName);
+                                icon = extractor.GetIcon(index);
+                            }
+
+                            splitIcons = IconUtil.Split(icon);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        txtFileName.Text = string.Format("{0}, #{1}, {2} variations", fileName, index, splitIcons.Length);
+
+                        // Update icons.
+
+                        Icon = icon;
+                        icon.Dispose();
+
+                        lvwIcons.BeginUpdate();
+                        ClearAllIcons();
+
+                        foreach (var i in splitIcons)
+                        {
+                            // Exclude all icons which size is > 256 (Throw "Generic GDI+ error" when converting if size > 128x128)
+                            if (i.Width > 128 || i.Height > 128)
+                                continue;
+
+                            var item = new IconListViewItem();
+                            var size = i.Size;
+                            var bits = IconUtil.GetBitCount(i);
+                            item.ToolTipText = string.Format("{0}x{1}, {2} bits", size.Width, size.Height, bits);
+                            item.Bitmap = IconUtil.ToBitmap(i);
+                            i.Dispose();
+
+                            lvwIcons.Items.Add(item);
+                        }
+
+                        lvwIcons.EndUpdate();
+                    }
+                    else if (firstOpen)
+                    {
+                        DialogResult = DialogResult.Cancel;
+                        this.Hide();
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
 
-                txtFileName.Text = String.Format("{0}, #{1}, {2} variations", fileName, index, splitIcons.Length);
-
-                // Update icons.
-
-                Icon = icon;
-                icon.Dispose();
-
-                lvwIcons.BeginUpdate();
-                ClearAllIcons();
-
-                foreach (var i in splitIcons)
-                {
-                    // Exclude all icons which size is > 256 (Throw "Generic GDI+ error" when converting if size > 128x128)
-                    if (i.Width > 128 || i.Height > 128)
-                        continue;
-
-                    var item = new IconListViewItem();
-                    var size = i.Size;
-                    var bits = IconUtil.GetBitCount(i);
-                    item.ToolTipText = String.Format("{0}x{1}, {2} bits", size.Width, size.Height, bits);
-                    item.Bitmap = IconUtil.ToBitmap(i);
-                    i.Dispose();
-
-                    lvwIcons.Items.Add(item);
-                }
-
-                lvwIcons.EndUpdate();
-            }
-            else if (firstOpen)
-            {
-                DialogResult = DialogResult.Cancel;
-                this.Hide();
             }
         }
 
