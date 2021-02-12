@@ -14,6 +14,7 @@ using System.IO;
 using System.Drawing.Imaging;
 using System.Diagnostics;
 using KeePassLib.Interfaces;
+using ExeIconPicker.Utils;
 
 namespace ExeIconPicker
 {
