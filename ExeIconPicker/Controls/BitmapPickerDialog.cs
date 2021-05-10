@@ -13,6 +13,8 @@ namespace ExeIconPicker.Controls
     public partial class BitmapPickerDialog : Form //source: https://www.codeproject.com/articles/26824/extract-icons-from-exe-or-dll-files
     {
         public Bitmap Result { get; private set; }
+        public string FileName { get; private set; }
+
         private bool firstOpen = true;
 
         private class IconListViewItem : ListViewItem
@@ -82,6 +84,9 @@ namespace ExeIconPicker.Controls
                     {
                         var fileName = iconPickerDialog.FileName;
                         var index = iconPickerDialog.IconIndex;
+
+                        // Set FileName to further retrieve it
+                        FileName = Path.GetFileNameWithoutExtension(fileName);
 
                         Icon icon = null;
                         Icon[] splitIcons = null;
