@@ -149,7 +149,8 @@ namespace ExeIconPicker
             }
 
             // Pick an icon
-            Bitmap icon = PickIcon();
+            string fileName;
+            Bitmap icon = PickIcon(out fileName);
 
             // If user cancelled
             if (icon == null)
@@ -177,10 +178,13 @@ namespace ExeIconPicker
             // Check uuid for duplicates
             var uuid = new PwUuid(Util.HashData(data));
             var dbIcon = pluginHost.Database.CustomIcons.FirstOrDefault(x => x.Uuid.Equals(uuid));
+
             if (dbIcon == null)
             {
                 Util.Log("Icon doesn't exist");
+
                 customIcon = new PwCustomIcon(uuid, data);
+
                 pluginHost.Database.CustomIcons.Add(customIcon);
             }
             else
@@ -188,6 +192,8 @@ namespace ExeIconPicker
                 Util.Log("Icon already exists");
                 customIcon = dbIcon;
             }
+
+            customIcon.Name = fileName;
 
             // Update icons
             ChangeEntriesIcon(entries, group, customIcon);
@@ -207,7 +213,7 @@ namespace ExeIconPicker
             Util.Log("Executed successfully");
         }
 
-        private Bitmap PickIcon()
+        private Bitmap PickIcon(out string fileName)
         {
             Util.Log("Picking icon.");
 
@@ -218,10 +224,16 @@ namespace ExeIconPicker
                     if (bitmapPicker.Result != null)
                     {
                         Util.Log("Icon picked");
+
+                        fileName = bitmapPicker.FileName;
+
                         return bitmapPicker.Result;
                     }
                 }
                 Util.Log("User cancelled");
+
+                fileName = null;
+
                 return null;
             }
         }
