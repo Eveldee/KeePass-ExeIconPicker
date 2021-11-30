@@ -25,6 +25,20 @@ ExeIconPicker plugin for KeePass 2.x is a plugin that let you grab an icon from 
 - Copy the file in your KeePass plugins directory (C:\Program Files (x86)\KeePass\Plugins).
 - Restart *KeePass* if it was already running.
 
+
+#### Chocolatey 📦 
+Or you can [use Chocolatey to install](https://community.chocolatey.org/packages/keepass-exe-icon-picker#install) it in a more automated manner:
+
+```
+choco install keepass-exe-icon-picker
+```
+
+To [upgrade KeePass Plugin Exe Icon Picker](https://community.chocolatey.org/packages/keepass-exe-icon-picker#upgrade) to the [latest release version](https://community.chocolatey.org/packages/keepass-exe-icon-picker#versionhistory) for enjoying the newest features, run the following command from the command line or from PowerShell:
+
+```
+choco upgrade keepass-exe-icon-picker
+```
+
 ## Build
 
 In order to build the plugin yourself, you will need to modify KeePassDir in the build.cmd file accorded to your *KeePass* installation folder.
